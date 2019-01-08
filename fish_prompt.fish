@@ -68,7 +68,6 @@ function setup_parameters -d "Set default value if parameter is not declared"
   set -q BULLETTRAIN_PYTHON_SHOW_SYSTEM; or set -g BULLETTRAIN_PYTHON_SHOW_SYSTEM true
   set -q VIRTUAL_ENV_DISABLE_PROMPT; or set -g VIRTUAL_ENV_DISABLE_PROMPT true
   # node
-  
   # go
   set -q BULLETTRAIN_GO_SHOW; or set -g BULLETTRAIN_GO_SHOW
   set -q BULLETTRAIN_GO_BG; or set -g BULLETTRAIN_GO_BG cyan
@@ -195,8 +194,8 @@ function __bt_prompt_time -d "Show current time"
   test "$BULLETTRAIN_TIME_SHOW" = "true"; or return
 
   test "$BULLETTRAIN_TIME_12HR" = "true";
-    and prompt_segment $BULLETTRAIN_TIME_BG $BULLETTRAIN_TIME_FG (date "+%r");
-    or  prompt_segment $BULLETTRAIN_TIME_BG $BULLETTRAIN_TIME_FG (date "+%T")
+    and __bt_prompt_segment $BULLETTRAIN_TIME_BG $BULLETTRAIN_TIME_FG (date "+%r");
+    or  __bt_prompt_segment $BULLETTRAIN_TIME_BG $BULLETTRAIN_TIME_FG (date "+%T")
 end
 
 function __bt_prompt_status -d "Show last command status"
@@ -215,13 +214,13 @@ function __bt_prompt_status -d "Show last command status"
   end
   test (id -u) -eq 0; and set _symbols $_symbols $BULLETTRAIN_STATUS_ROOT
   test (jobs -l | wc -l) -gt 0; and set _symbols $_symbols $BULLETTRAIN_STATUS_JOB
-  test "$_symbols"; and prompt_segment $_bg $_fg "$_symbols"
+  test "$_symbols"; and __bt_prompt_segment $_bg $_fg "$_symbols"
 end
 
 function __bt_prompt_custom -d "Show custome message"
   test "$BULLETTRAIN_CUSTOM_MSG"; or return
 
-  prompt_segment $BULLETTRAIN_CUSTOM_BG $BULLETTRAIN_CUSTOM_FG $BULLETTRAIN_CUSTOM_MSG
+  __bt_prompt_segment $BULLETTRAIN_CUSTOM_BG $BULLETTRAIN_CUSTOM_FG $BULLETTRAIN_CUSTOM_MSG
 end
 
 function context
@@ -234,7 +233,7 @@ function __bt_prompt_context -d "Show context"
 
   set -l _context (context)
   test "$_context";
-    and prompt_segment $BULLETTRAIN_CONTEXT_BG $BULLETTRAIN_CONTEXT_FG $_context
+    and __bt_prompt_segment $BULLETTRAIN_CONTEXT_BG $BULLETTRAIN_CONTEXT_FG $_context
 end
 
 function __bt_prompt_dir -d "Show current directory"
@@ -254,7 +253,7 @@ function __bt_prompt_dir -d "Show current directory"
     set _dir "$_dir"(prompt_pwd)
   end
 
-  prompt_segment $BULLETTRAIN_DIR_BG $BULLETTRAIN_DIR_FG "$_dir"
+  __bt_prompt_segment $BULLETTRAIN_DIR_BG $BULLETTRAIN_DIR_FG "$_dir"
 end
 
 function __bt_prompt_perl -d "Show perl environment"
@@ -262,7 +261,7 @@ function __bt_prompt_perl -d "Show perl environment"
 
   test (command -v plenv);
     and set -l _version $BULLETTRAIN_PERL_PREFIX (plenv version | sed -e 's/ (set.*$//');
-      and prompt_segment $BULLETTRAIN_PERL_BG $BULLETTRAIN_PERL_FG "$_version"
+      and __bt_prompt_segment $BULLETTRAIN_PERL_BG $BULLETTRAIN_PERL_FG "$_version"
 end
 
 function __bt_prompt_ruby -d "Show ruby environment"
@@ -290,7 +289,7 @@ function __bt_prompt_ruby -d "Show ruby environment"
 
   test "$_ruby_prompt";
     and set _ruby_prompt $BULLETTRAIN_RUBY_PREFIX $_ruby_prompt;
-      and prompt_segment $BULLETTRAIN_RUBY_BG $BULLETTRAIN_RUBY_FG "$_ruby_prompt"
+      and __bt_prompt_segment $BULLETTRAIN_RUBY_BG $BULLETTRAIN_RUBY_FG "$_ruby_prompt"
 end
 
 function __bt_prompt_python -d "Show python environment"
@@ -312,7 +311,7 @@ function __bt_prompt_python -d "Show python environment"
 
   test "$_python_prompt";
     and set _python_prompt $BULLETTRAIN_PYTHON_PREFIX $_python_prompt;
-      and prompt_segment $BULLETTRAIN_PYTHON_BG $BULLETTRAIN_PYTHON_FG "$_python_prompt"
+      and __bt_prompt_segment $BULLETTRAIN_PYTHON_BG $BULLETTRAIN_PYTHON_FG "$_python_prompt"
 end
 
 function __bt_prompt_go -d "Show go environment"
@@ -327,7 +326,7 @@ function __bt_prompt_go -d "Show go environment"
 
   test "$_go_prompt";
     and set _go_prompt $BULLETTRAIN_GO_PREFIX $_go_prompt;
-      and prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG "$_go_prompt"
+      and __bt_prompt_segment $BULLETTRAIN_GO_BG $BULLETTRAIN_GO_FG "$_go_prompt"
 end
 
 function __bt_prompt_git -d "Show git working tree info"
@@ -355,10 +354,10 @@ function git_prompt_info -a bg fg is_dirty
 
   set -l _dirty $BULLETTRAIN_GIT_CLEAN
   test "$is_dirty" = "true"; and set _dirty $BULLETTRAIN_GIT_DIRTY;
-  test "$BULLETTRAIN_GIT_PREFIX"; and prompt_segment $bg $fg $BULLETTRAIN_GIT_PREFIX
-  prompt_segment $bg $fg (echo $ref | sed "s-refs/heads/--")
-  test "$_dirty"; and prompt_segment $bg (test "$is_dirty" = "true"; and echo $BULLETTRAIN_GIT_DIRTY_FG; or echo $fg) $_dirty
-  test "$BULLETTRAIN_GIT_SUFFIX"; and prompt_segment $bg $fg $BULLETTRAIN_GIT_SUFFIX
+  test "$BULLETTRAIN_GIT_PREFIX"; and __bt_prompt_segment $bg $fg $BULLETTRAIN_GIT_PREFIX
+  __bt_prompt_segment $bg $fg (echo $ref | sed "s-refs/heads/--")
+  test "$_dirty"; and __bt_prompt_segment $bg (test "$is_dirty" = "true"; and echo $BULLETTRAIN_GIT_DIRTY_FG; or echo $fg) $_dirty
+  test "$BULLETTRAIN_GIT_SUFFIX"; and __bt_prompt_segment $bg $fg $BULLETTRAIN_GIT_SUFFIX
 end
 
 function is_git_dirty
@@ -426,7 +425,7 @@ function git_prompt_segment -a bg base_fg fg prompt
   test -n "$prompt"; or return
   set -l _fg $base_fg
   test "$fg"; and set _fg $fg
-  prompt_segment $bg $_fg $prompt
+  __bt_prompt_segment $bg $_fg $prompt
 end
 
 function __bt_prompt_hg -d "Show mercurial working tree info"
@@ -453,11 +452,11 @@ function __bt_prompt_hg -d "Show mercurial working tree info"
     and test "$_dirty_fg";
       and set _bg $BULLETTRAIN_HG_COLORIZE_DIRTY_BG;
         and set _fg $BULLETTRAIN_HG_COLORIZE_DIRTY_FG
-  prompt_segment $_bg $_fg "$_hg_prompt"
+  __bt_prompt_segment $_bg $_fg "$_hg_prompt"
 
   test "$_dirty_fg";
     and set _fg $_dirty_fg;
-      and prompt_segment $_bg $_fg $BULLETTRAIN_HG_DIRTY
+      and __bt_prompt_segment $_bg $_fg $BULLETTRAIN_HG_DIRTY
 end
 
 function displaytime -a t
@@ -478,7 +477,7 @@ function __bt_prompt_cmd_exec_time -d "Show last command exection time"
   test "$CMD_DURATION";
     and set _duration (math $CMD_DURATION/1000);
       and test $_duration -gt $BULLETTRAIN_EXEC_TIME_ELAPSED;
-        and prompt_segment \
+        and __bt_prompt_segment \
           $BULLETTRAIN_EXEC_TIME_BG \
           $BULLETTRAIN_EXEC_TIME_FG \
           (displaytime $_duration);
