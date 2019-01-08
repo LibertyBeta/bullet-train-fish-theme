@@ -36,6 +36,8 @@ function __bt_prompt_nodejs -d "Display the local node version"
 
 	# Don't echo section if the node version matches the default version
 	[ "$_nodejs_prompt" = "$BULLETTRAIN_NODEJS_DEFAULT" ]; and return
+
+	[ "$_nodejs_prompt" = "none" ]; and return;
 	
     test "$_nodejs_prompt";
     and set _nodejs_prompt $BULLETTRAIN_NODEJS_PREFIX $_nodejs_prompt;
