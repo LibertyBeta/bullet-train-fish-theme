@@ -5,6 +5,12 @@
 # Link: https://nodejs.org/
 
 function __bt_prompt_nodejs -d "Display the local node version"
+
+	set -q BULLETTRAIN_NODEJS_SHOW; or set -g BULLETTRAIN_NODEJS_SHOW
+  	set -q BULLETTRAIN_NODEJS_BG; or set -g BULLETTRAIN_NODEJS_BG green
+ 	set -q BULLETTRAIN_NODEJS_FG; or set -g BULLETTRAIN_NODEJS_FG white
+  	set -q BULLETTRAIN_NODEJS_PREFIX; or set -g BULLETTRAIN_NODEJS_PREFIX ⬢
+  	set -q BULLETTRAIN_NODEJS_DEFAULT; or set -g BULLETTRAIN_NODEJS_DEFAULT 0
 	
 	[ $BULLETTRAIN_NODEJS_SHOW = false ]; and return
 

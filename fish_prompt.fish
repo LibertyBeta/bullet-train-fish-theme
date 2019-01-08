@@ -68,11 +68,7 @@ function setup_parameters -d "Set default value if parameter is not declared"
   set -q BULLETTRAIN_PYTHON_SHOW_SYSTEM; or set -g BULLETTRAIN_PYTHON_SHOW_SYSTEM true
   set -q VIRTUAL_ENV_DISABLE_PROMPT; or set -g VIRTUAL_ENV_DISABLE_PROMPT true
   # node
-  set -q BULLETTRAIN_NODEJS_SHOW; or set -g BULLETTRAIN_NODEJS_SHOW
-  set -q BULLETTRAIN_NODEJS_BG; or set -g BULLETTRAIN_NODEJS_BG green
-  set -q BULLETTRAIN_NODEJS_FG; or set -g BULLETTRAIN_NODEJS_FG white
-  set -q BULLETTRAIN_NODEJS_PREFIX; or set -g BULLETTRAIN_NODEJS_PREFIX ⬢
-  set -q BULLETTRAIN_NODEJS_DEFAULT; or set -g BULLETTRAIN_NODEJS_DEFAULT 0
+  
   # go
   set -q BULLETTRAIN_GO_SHOW; or set -g BULLETTRAIN_GO_SHOW
   set -q BULLETTRAIN_GO_BG; or set -g BULLETTRAIN_GO_BG cyan
