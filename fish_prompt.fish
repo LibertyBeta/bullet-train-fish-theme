@@ -44,11 +44,6 @@ function setup_parameters -d "Set default value if parameter is not declared"
   set -q BULLETTRAIN_CONTEXT_HOSTNAME; or set -g BULLETTRAIN_CONTEXT_HOSTNAME (hostname -s)
   set -q BULLETTRAIN_IS_SSH_CLIENT; or set -g BULLETTRAIN_IS_SSH_CLIENT
   # dir
-  set -q BULLETTRAIN_DIR_SHOW; or set -g BULLETTRAIN_DIR_SHOW true
-  set -q BULLETTRAIN_DIR_BG; or set -g BULLETTRAIN_DIR_BG blue
-  set -q BULLETTRAIN_DIR_FG; or set -g BULLETTRAIN_DIR_FG white
-  set -q BULLETTRAIN_DIR_CONTEXT_SHOW; or set -g BULLETTRAIN_DIR_CONTEXT_SHOW
-  set -q BULLETTRAIN_DIR_EXTENDED; or set -g BULLETTRAIN_DIR_EXTENDED 0
   # perl
   set -q BULLETTRAIN_PERL_SHOW; or set -g BULLETTRAIN_PERL_SHOW
   set -q BULLETTRAIN_PERL_BG; or set -g BULLETTRAIN_PERL_BG yellow
@@ -236,25 +231,6 @@ function __bt_prompt_context -d "Show context"
     and __bt_prompt_segment $BULLETTRAIN_CONTEXT_BG $BULLETTRAIN_CONTEXT_FG $_context
 end
 
-function __bt_prompt_dir -d "Show current directory"
-  test "$BULLETTRAIN_DIR_SHOW" = "true"; or return
-
-  set -l _dir
-  test "$BULLETTRAIN_DIR_CONTEXT_SHOW" = "true";
-    and set -l _context (context);
-      and test "$_context";
-        and set _dir "$_context:"
-
-  switch $BULLETTRAIN_DIR_EXTENDED
-  case -1
-    set _dir "$_dir$PWD"
-  case "*"
-    set -g fish_prompt_pwd_dir_length $BULLETTRAIN_DIR_EXTENDED
-    set _dir "$_dir"(prompt_pwd)
-  end
-
-  __bt_prompt_segment $BULLETTRAIN_DIR_BG $BULLETTRAIN_DIR_FG "$_dir"
-end
 
 function __bt_prompt_perl -d "Show perl environment"
   test "$BULLETTRAIN_PERL_SHOW" = "true"; or return
