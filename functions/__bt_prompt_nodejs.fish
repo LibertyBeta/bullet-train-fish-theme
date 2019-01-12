@@ -4,18 +4,18 @@
 # Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
 # Link: https://nodejs.org/
 
+#TODO: MAKE THIS NOT USER GLOBALS IF AT ALL POSSIBLE
+
 function __bt_prompt_nodejs -d "Display the local node version"
 
-	set -q BULLETTRAIN_NODEJS_SHOW; or set -g BULLETTRAIN_NODEJS_SHOW
+	set -q BULLETTRAIN_NODEJS_SHOW; or set -g BULLETTRAIN_NODEJS_SHOW 
   	set -q BULLETTRAIN_NODEJS_BG; or set -g BULLETTRAIN_NODEJS_BG green
  	set -q BULLETTRAIN_NODEJS_FG; or set -g BULLETTRAIN_NODEJS_FG white
   	set -q BULLETTRAIN_NODEJS_PREFIX; or set -g BULLETTRAIN_NODEJS_PREFIX ⬢
   	set -q BULLETTRAIN_NODEJS_DEFAULT; or set -g BULLETTRAIN_NODEJS_DEFAULT 0
 	
-	[ $BULLETTRAIN_NODEJS_SHOW = false ]; and return
+	test "$BULLETTRAIN_NODEJS_SHOW" = "true"; or return
 
-
-    set -g _nodejs_prompt
 	if type -q nvm
 		# Only recheck the node version if the nvm bin has changed
 		if test "$NVM_BIN" != "$sf_last_nvm_bin" -o -z "$_nodejs_prompt"
@@ -31,16 +31,15 @@ function __bt_prompt_nodejs -d "Display the local node version"
 	end
 	
 
-	# Don't echo section if the system verison of node is being used
+	# # Don't echo section if the system verison of node is being used
 	[ "$_nodejs_prompt" = "system" -o "$_nodejs_prompt" = "node" ]; and return
 
-	# Don't echo section if the node version matches the default version
+	# # Don't echo section if the node version matches the default version
 	[ "$_nodejs_prompt" = "$BULLETTRAIN_NODEJS_DEFAULT" ]; and return
 
-	[ "$_nodejs_prompt" = "none" ]; and return;
+	[ "$_nodejs_prompt" = "none" ]; and return
 	
     test "$_nodejs_prompt";
-    and set _nodejs_prompt $BULLETTRAIN_NODEJS_PREFIX $_nodejs_prompt;
-      and __bt_prompt_segment $BULLETTRAIN_NODEJS_BG $BULLETTRAIN_NODEJS_FG "$_nodejs_prompt"
+      and __bt_prompt_segment $BULLETTRAIN_NODEJS_BG $BULLETTRAIN_NODEJS_FG "$BULLETTRAIN_NODEJS_PREFIX $_nodejs_prompt"
 
 end
