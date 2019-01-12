@@ -27,7 +27,7 @@ function __bt_prompt_dir -d "Show current directory"
 #   echo (string replace -a "/" "  " "$_dir")
 #   echo (string replace "t" "l" "test")
 
-  # test "$BULLETTRAIN_DIR_ARROW" = "true"; and set -l _dir (string replace -a "/" "$BULLETTRAIN_DIR_ARROW_CHAR" "$_dir");
+  test "$BULLETTRAIN_DIR_ARROW" = "true"; and set -l _dir (string replace -a "/" "$BULLETTRAIN_DIR_ARROW_CHAR" "$_dir");
 
   __bt_prompt_segment $BULLETTRAIN_DIR_BG $BULLETTRAIN_DIR_FG "$_dir"
 end
